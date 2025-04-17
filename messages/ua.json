@@ -1,0 +1,48 @@
+{
+  "common": {
+    "buttons": {
+    },
+    "form": {
+      "email": "Пошта",
+      "password": "Пароль",
+      "confirm-password": "Підтвердіть пароль",
+      "account-type": {
+        "label": "Тип облікового запису",
+        "placeholder": "Виберіть тип облікового запису"
+      },
+      "birth-date": {
+        "label": "Дата народження",
+        "placeholder": "Виберіть дату"
+      },
+      "terms-of-use": {
+        "label": "Я приймаю положення та умови",
+        "description": "Реєструючись, ви приймаєте наші <link>умови та положення</link>"
+      },
+      "company-name": "Назва компанії",
+      "nums-of-employees": "Кількість працівників"
+    }
+  },
+  "login": {
+    "title": "Вхід",
+    "description": "Вхід у твій {platform} обліковий запис",
+    "form-description": "Це адреса електронної пошти, за допомогою якої ви зареєструвалися в {platform}",
+    "no-account": "Немає облікового запису?"
+  },
+  "register": {
+    "title": "Реєстрація",
+    "sign-up": "Зареєструватися",
+    "description": "Створити новий обліковий запис на {platform}",
+    "date-picker-description": "Ваша дата народження використовується для розрахунку вашого віку",
+    "form": {
+      "select-values": {
+        "personal": "Особистий",
+        "company": "Корпоративний"
+      }
+    }
+  },
+  "errors": {
+    "validations": {
+      "required-field": "{field} - це поле обовзкове!"
+    }
+  }
+}
