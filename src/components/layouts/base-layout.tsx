@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { getMessages } from 'next-intl/server'
 import { MainProvider } from '@/components/providers/main-provider'
 import '@/app/globals.css'
-import { ToggleThemeButton } from '@/components/shared/toggle-theme-button'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,9 +28,8 @@ export default async function BaseLayout({
   return (
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <MainProvider messages={messages}>
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex min-h-screen w-full items-center justify-center">
           {children}
-         {/* <ToggleThemeButton />*/}
         </div>
       </MainProvider>
     </body>

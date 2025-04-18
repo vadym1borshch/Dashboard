@@ -1,8 +1,11 @@
 import React from 'react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
+import { format } from 'date-fns'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import {
   Form,
   FormControl,
@@ -30,16 +33,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
-import { enUS, uk } from 'date-fns/locale'
+import { useLocale } from '@/helpers/hooks/useLocale'
+import PasswordInput from '@/components/shared/password-input'
 
 export const SignUpForm = () => {
   const t = useTranslations()
   const formSchema = useLoginValidation()
-  const locale = useLocale()
+  const { dateFnsLocale } = useLocale()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,13 +50,6 @@ export const SignUpForm = () => {
       terms: false,
     },
   })
-
-  const localeMap = {
-    en: enUS,
-    ua: uk,
-  }
-
-  const dateFnsLocale = localeMap[locale as keyof typeof localeMap] ?? enUS
 
   const accountType = form.watch('accountType')
 
@@ -164,7 +158,7 @@ export const SignUpForm = () => {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, 'PPP')
+                        format(field.value, 'PPP', { locale: dateFnsLocale })
                       ) : (
                         <span>{t('common.form.birth-date.placeholder')}</span>
                       )}
@@ -179,7 +173,7 @@ export const SignUpForm = () => {
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) =>
-                      date > new Date() || date < new Date('1900-01-01')
+                      date > new Date() || date < new Date('1920-01-01')
                     }
                     fixedWeeks
                     weekStartsOn={1}
@@ -192,7 +186,7 @@ export const SignUpForm = () => {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Your date of birth is used to calculate your age.
+                {t('register.date-picker-description')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -205,7 +199,7 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>{t('common.form.password')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('common.form.password')} {...field} />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -218,18 +212,12 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>{t('common.form.confirm-password')}</FormLabel>
               <FormControl>
-                <Input
-                  placeholder={t('common.form.confirm-password')}
-                  {...field}
-                />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full self-center md:w-1/2">
-          {t('register.sign-up')}
-        </Button>
         <FormField
           control={form.control}
           name="terms"
@@ -241,7 +229,7 @@ export const SignUpForm = () => {
                     <Checkbox
                       id="terms"
                       checked={field.value}
-                      onCheckedChange={field.onChange}
+                      onCheckedChange={(val) => field.onChange(!!val)}
                       className="cursor-pointer"
                     />
                     <Label htmlFor="terms" className="cursor-pointer">
@@ -253,7 +241,7 @@ export const SignUpForm = () => {
                       link: (chunks) => (
                         <Button
                           asChild
-                          className="h-fit bg-transparent p-0 text-base text-red-500 hover:bg-transparent"
+                          className="h-fit bg-transparent p-0 text-base text-red-500 hover:bg-transparent hover:underline"
                         >
                           <Link href="/terms-of-use">{chunks}</Link>
                         </Button>
@@ -266,6 +254,15 @@ export const SignUpForm = () => {
             </FormItem>
           )}
         />
+        <Button type="submit" className="w-full self-center">
+          {t('register.sign-up')}
+        </Button>
+        <Button
+          className="w-full self-center bg-transparent hover:bg-transparent"
+          asChild
+        >
+          <Link href="/login"> {t('login.title')}</Link>
+        </Button>
       </form>
     </Form>
   )

@@ -28,7 +28,7 @@ const LoginPage = () => {
       </CardContent>
       <CardFooter className="justify-between">
         <small>{t('login.no-account')}</small>
-        <Button variant="outline" className="" asChild>
+        <Button variant="outline" asChild>
           <Link href="/sign-up">{t('register.sign-up')}</Link>
         </Button>
       </CardFooter>

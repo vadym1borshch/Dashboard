@@ -19,7 +19,11 @@
         "description": "By signing up you agree to our <link>terms and conditions</link>"
       },
       "company-name": "Company name",
-      "nums-of-employees": "Employees count"
+      "nums-of-employees": "Employees count",
+      "switch": {
+        "value1": "Employees stats",
+        "value2": "Teams stats"
+      }
     }
   },
   "login": {
@@ -40,9 +44,26 @@
       }
     }
   },
+  "dashboard": {
+    "pages": {
+      "dashboard": "My dashboard",
+      "teams": "Teams",
+      "employees": "Employees",
+      "account": "Account",
+      "settings": "Settings"
+    }
+  },
   "errors": {
     "validations": {
-      "required-field": "{field} - this field is required!"
+      "required-field": "{field} - this field is required!",
+      "password": {
+        "min-char": "Password must be at least 8 characters",
+        "contains": "Password must contain 1 special character,1 uppercase letter and 1 number",
+        "confirm": "Password do not match"
+      },
+      "year-validation": "You must be at least 18 years old to register",
+      "email": "Incorrect email",
+      "terms": "You must accept the terms of use"
     }
   }
 }

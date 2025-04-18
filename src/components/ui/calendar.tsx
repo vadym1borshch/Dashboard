@@ -13,6 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select'
+import { useLocale } from '@/helpers/hooks/useLocale'
 
 function Calendar({
   className,
@@ -26,7 +27,7 @@ function Calendar({
       className={cn('p-4', className)}
       classNames={{
         months: 'flex flex-col sm:flex-row gap-2 w-[16rem]',
-        month: 'flex flex-col gap-4',
+        month: 'flex flex-col gap-4 w-full',
         caption: 'flex justify-center pt-1 relative items-center w-full',
         caption_label: 'text-sm font-medium hidden',
         nav: 'flex items-center gap-1',
@@ -78,12 +79,17 @@ function Calendar({
           const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
             useDayPicker()
           const { currentMonth, goToMonth } = useNavigation()
+          const { dateFnsLocale } = useLocale()
           let selectValues: { value: string; label: string }[] = []
           if (dropdownProps.name === 'months') {
             selectValues = Array.from({ length: 12 }, (_, i) => {
               return {
                 value: i.toString(),
-                label: format(new Date(new Date().getFullYear(), i, 1), 'MMMM'),
+                label: format(
+                  new Date(new Date().getFullYear(), i, 1),
+                  'MMMM',
+                  { locale: dateFnsLocale }
+                ),
               }
             })
           } else if (dropdownProps.name === 'years') {
@@ -103,8 +109,13 @@ function Calendar({
           }
           const caption = format(
             currentMonth,
-            dropdownProps.name === 'months' ? 'MMM' : 'yyyy'
-          )
+            dropdownProps.name === 'months' ? 'MMM' : 'yyyy',
+            { locale: dateFnsLocale }
+          ).toUpperCase()
+          const captionLabel =
+            dropdownProps.name === 'months'
+              ? caption.slice(0, caption.length - 1)
+              : caption
           return (
             <Select
               onValueChange={(newValue) => {
@@ -119,7 +130,9 @@ function Calendar({
                 }
               }}
             >
-              <SelectTrigger className={className}>{caption}</SelectTrigger>
+              <SelectTrigger className={className}>
+                {captionLabel}
+              </SelectTrigger>
               <SelectContent>
                 {selectValues.map(({ value, label }) => (
                   <SelectItem key={value} value={value}>

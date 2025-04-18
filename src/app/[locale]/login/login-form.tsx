@@ -1,3 +1,4 @@
+import React from 'react'
 import { useTranslations } from 'next-intl'
 import { useLoginValidation } from '@/app/[locale]/login/validation'
 import { useForm } from 'react-hook-form'
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import PasswordInput from '@/components/shared/password-input'
 
 export const LoginForm = () => {
   const t = useTranslations()
@@ -62,13 +63,13 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>{t('common.form.password')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('common.form.password')} {...field} />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full self-center md:w-1/2">
+        <Button type="submit" className="w-full self-center">
           {t('login.title')}
         </Button>
       </form>

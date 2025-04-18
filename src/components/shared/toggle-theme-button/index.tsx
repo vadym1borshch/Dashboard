@@ -19,7 +19,7 @@ export const ToggleThemeButton = () => {
           asChild
           onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
         >
-          <Button variant="outline">
+          <Button variant="outline" className="w-fit">
             <SunIcon className="block dark:hidden" />
             <MoonIcon className="hidden dark:block" />
           </Button>

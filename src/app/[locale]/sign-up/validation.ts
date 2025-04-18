@@ -1,26 +1,59 @@
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
 export const useLoginValidation = () => {
   const t = useTranslations()
   return z
     .object({
-      email: z.string().email({}),
-      password: z.string().min(8, {
-        message: 'Password must be at least 8 characters.',
+      email: z.string().email(t('errors.validations.email')),
+      password: z
+        .string()
+        .min(8, t('errors.validations.password.min-char'))
+        .refine((password) => {
+          return passwordRegex.test(password)
+        }, t('errors.validations.password.contains')),
+      accountType: z.enum(['personal', 'company'], {
+        message: t('errors.validations.required-field', {
+          field: t('common.form.account-type.label'),
+        }),
       }),
-      accountType: z.enum(['personal', 'company']),
       companyName: z.string().optional(),
       numsOfEmployees: z.coerce.number().optional(),
-      birthDate: z.date().refine((date) => {
-        const now = new Date()
-        const eighteen = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate())
-        return date <= eighteen
-      }, "You must be at least 18 years old to register."),
+      birthDate: z
+        .date({
+          message: t('errors.validations.required-field', {
+            field: t('common.form.birth-date.label'),
+          }),
+        })
+        .refine((date) => {
+          const now = new Date()
+          const eighteen = new Date(
+            now.getFullYear() - 18,
+            now.getMonth(),
+            now.getDate()
+          )
+          return date <= eighteen
+        }, t('errors.validations.year-validation')),
       confirmPassword: z.string(),
-      terms: z.boolean(),
+      terms: z
+        .boolean({
+          required_error: t('errors.validations.terms'),
+        })
+        .refine((val) => val, {
+          message: t('errors.validations.terms'),
+        }),
     })
     .superRefine((data, ctx) => {
+      if (data.password !== data.confirmPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['confirmPassword'],
+          message: t('errors.validations.password.confirm'),
+        })
+      }
       if (data.accountType === 'company' && !data.companyName) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
