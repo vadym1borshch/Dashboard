@@ -27,11 +27,7 @@ export default async function BaseLayout({
   const messages = await getMessages()
   return (
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <MainProvider messages={messages}>
-        <div className="flex min-h-screen w-full items-center justify-center">
-          {children}
-        </div>
-      </MainProvider>
+      <MainProvider messages={messages}>{children}</MainProvider>
     </body>
   )
 }

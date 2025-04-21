@@ -10,12 +10,17 @@ import { Button } from '@/components/ui/button'
 import { MoonIcon, SunIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
-export const ToggleThemeButton = () => {
+interface Props {
+  triggerClassName?: string
+}
+
+export const ToggleThemeButton = ({ triggerClassName }: Props) => {
   const { setTheme, resolvedTheme } = useTheme()
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger
+          className={triggerClassName}
           asChild
           onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
         >

@@ -1,7 +1,6 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import { useLayoutEffect } from '@radix-ui/react-use-layout-effect'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 
@@ -11,51 +10,92 @@ type Value = {
 }
 
 interface Props {
-  value1: Value
-  value2: Value
+  values: Value[]
+  current: string
+  setCurrent: (val: string) => void
 }
 
-const Switcher = ({ value1, value2 }: Props) => {
-  const [active, setActive] = useState(value1)
-  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 })
+const Switcher = ({ values, setCurrent, current }: Props) => {
+  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, height: 0, x: 0, y: 0 })
+  const [isVertical, setIsVertical] = useState(false)
+
   const t = useTranslations()
   const ref1 = useRef<HTMLButtonElement>(null)
   const ref2 = useRef<HTMLButtonElement>(null)
 
-  useLayoutEffect(() => {
-    const target = active === value1 ? ref1.current : ref2.current
-    if (target) {
-      const { offsetWidth, offsetLeft } = target
-      setIndicatorStyle({ width: offsetWidth, left: offsetLeft })
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsVertical(window.innerWidth < 768) // <sm
     }
-  }, [active, value1, value2])
+
+    checkScreen()
+    window.addEventListener('resize', checkScreen)
+    return () => window.removeEventListener('resize', checkScreen)
+  }, [])
+
+  useEffect(() => {
+    let animationFrameId: number
+
+    const updateIndicator = () => {
+      const target = current === values[0].key ? ref1.current : ref2.current
+      if (target) {
+        const { offsetWidth, offsetHeight, offsetLeft, offsetTop } = target
+        setIndicatorStyle({
+          width: offsetWidth,
+          height: offsetHeight,
+          x: offsetLeft,
+          y: offsetTop,
+        })
+      }
+
+      animationFrameId = requestAnimationFrame(updateIndicator)
+    }
+
+    animationFrameId = requestAnimationFrame(updateIndicator)
+
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [current, values])
 
   return (
-    <div className="dark:bg-secondary relative inline-flex w-fit rounded-[4px] bg-primary p-1">
+    <div
+      className={cn(
+        'relative w-full md:w-fit rounded-[4px] p-1 transition-all duration-300 ease-in-out',
+        'bg-primary dark:bg-secondary',
+        isVertical ? 'flex flex-col' : 'inline-flex flex-row'
+      )}
+    >
       <div
-        className="absolute top-1/2 h-8 rounded-[4px] bg-muted transition-all duration-300 ease-in-out dark:bg-black"
+        className="absolute rounded-[4px] bg-muted dark:bg-black transition-all duration-300 ease-in-out"
         style={{
           width: `${indicatorStyle.width}px`,
-          transform: `translate(${indicatorStyle.left}px, -50%)`,
+          height: `${indicatorStyle.height}px`,
+          transform: `translate(${indicatorStyle.x}px, ${indicatorStyle.y}px)`,
         }}
       />
 
-      <div className="relative z-10 flex items-center gap-1">
-        {[value1, value2].map((val, idx) => {
-          const isActive = active === val
+      <div
+        className={cn(
+          'relative z-10 flex transition-all duration-300 gap-1',
+          isVertical ? 'flex-col' : 'flex-row'
+        )}
+      >
+        {values.map((val, idx) => {
+          const isActive = current === val.key
           const ref = idx === 0 ? ref1 : ref2
 
           return (
             <Button
               key={val.key}
               ref={ref}
-              onClick={() => setActive(val)}
+              onClick={() => setCurrent(val.key)}
               className={cn(
-                'relative z-10 px-6 py-1.5 text-sm font-semibold transition-colors duration-300 bg-transparent',
+                'relative z-10 px-6 py-1.5 text-sm font-semibold transition-colors duration-300 bg-transparent shadow-none',
                 'rounded-md text-white',
                 'hover:bg-transparent',
-                { 'dark:text-white text-black': isActive, 'text-white': !isActive },
-
+                {
+                  'dark:text-white text-black': isActive,
+                  'text-white': !isActive,
+                }
               )}
             >
               {t(val.label)}

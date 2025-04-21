@@ -118,5 +118,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 16px;
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
   }
+}
+
+:root {
+  --sidebar-offset: calc((100vw - 1440px) / 2);
 }

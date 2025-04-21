@@ -51,6 +51,30 @@
       "employees": "Employees",
       "account": "Account",
       "settings": "Settings"
+    },
+    "cards": {
+      "1st": {
+        "title": "Total employees",
+        "button": "View all"
+      },
+      "2nd": {
+        "title": "Employees present",
+        "sub-title": "of employees are present",
+        "extra": "only"
+      },
+      "3rd": {
+        "title": "Employee of the month",
+        "sub-title": "Congratulation, {name}"
+      }
+    },
+    "charts": {
+      "main-title": "Employee work location trends",
+      "bar": {
+        "labels": {
+          "home": "Work from home",
+          "office": "Work from office"
+        }
+      }
     }
   },
   "errors": {
@@ -65,5 +89,9 @@
       "email": "Incorrect email",
       "terms": "You must accept the terms of use"
     }
+  },
+  "locale": {
+    "en": "EN",
+    "ua": "UKR"
   }
 }
