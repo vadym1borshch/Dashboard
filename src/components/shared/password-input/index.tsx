@@ -20,9 +20,9 @@ const PasswordInput = ({ hidden = true, ...props }: Props) => {
   return (
     <div className="relative flex items-center gap-2">
       <Input
-        {...props}
         type={type}
         placeholder={props.placeholder || '••••••••'}
+        {...props}
       />
       {type === 'password' ? (
         <EyeOffIcon size={20} onClick={toggleType} className={iconStyle} />

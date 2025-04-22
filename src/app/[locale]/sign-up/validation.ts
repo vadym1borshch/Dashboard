@@ -1,8 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+import { passwordRegex } from '@/@common/regex'
 
 export const useLoginValidation = () => {
   const t = useTranslations()

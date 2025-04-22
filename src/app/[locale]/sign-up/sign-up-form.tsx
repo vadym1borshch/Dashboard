@@ -36,6 +36,7 @@ import {
 import { Calendar } from '@/components/ui/calendar'
 import { useLocale } from '@/helpers/hooks/useLocale'
 import PasswordInput from '@/components/shared/password-input'
+import { redirect } from 'next/navigation'
 
 export const SignUpForm = () => {
   const t = useTranslations()
@@ -53,8 +54,9 @@ export const SignUpForm = () => {
 
   const accountType = form.watch('accountType')
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit = async (_values: z.infer<typeof formSchema>) => {
+    redirect("/dashboard")
   }
 
   return (
@@ -224,7 +226,7 @@ export const SignUpForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 text-sm">
                   <span className="flex items-center gap-3">
                     <Checkbox
                       id="terms"
@@ -241,7 +243,7 @@ export const SignUpForm = () => {
                       link: (chunks) => (
                         <Button
                           asChild
-                          className="h-fit bg-transparent p-0 text-base text-red-500 hover:bg-transparent hover:underline"
+                          className="h-fit bg-transparent p-0 text-red-500 shadow-none hover:bg-transparent hover:underline"
                         >
                           <Link href="/terms-of-use">{chunks}</Link>
                         </Button>
@@ -258,7 +260,7 @@ export const SignUpForm = () => {
           {t('register.sign-up')}
         </Button>
         <Button
-          className="w-full self-center bg-transparent hover:bg-transparent"
+          className="bg-muted hover:bg-muted w-full self-center text-black dark:bg-transparent dark:text-white"
           asChild
         >
           <Link href="/login"> {t('login.title')}</Link>

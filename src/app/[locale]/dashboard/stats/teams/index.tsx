@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import { ChartPieIcon, ListChecksIcon, StarIcon, UsersIcon } from 'lucide-react'
 import { InfoCard } from '@/components/shared/info-card'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   Tooltip,

@@ -104,6 +104,7 @@
   "errors": {
     "validations": {
       "required-field": "{field} - this field is required!",
+      "login": "Invalid email or password",
       "password": {
         "min-char": "Password must be at least 8 characters",
         "contains": "Password must contain 1 special character,1 uppercase letter and 1 number",

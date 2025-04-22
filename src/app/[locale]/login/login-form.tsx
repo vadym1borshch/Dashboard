@@ -1,9 +1,6 @@
 import React from 'react'
 import { useTranslations } from 'next-intl'
-import { useLoginValidation } from '@/app/[locale]/login/validation'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
@@ -11,25 +8,43 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PasswordInput from '@/components/shared/password-input'
+import { emailRegex, passwordRegex } from '@/@common/regex'
+import { redirect } from 'next/navigation'
+
+
+type FormType = {
+  email: string
+  password: string
+}
 
 export const LoginForm = () => {
   const t = useTranslations()
-  const formSchema = useLoginValidation()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormType>({
     defaultValues: {
       email: '',
       password: '',
     },
   })
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: FormType) => {
+    if (!values.email || !values.password) {
+      return
+    }
+    if (
+      !emailRegex.test(values.email) ||
+      !passwordRegex.test(values.password)
+    ) {
+      form.setError('email', { message: '' })
+      form.setError('password', { message: '' })
+      form.setError('root', { message: t('errors.validations.login') })
+      return
+    }
+
+    redirect("/dashboard")
   }
 
   return (
@@ -45,14 +60,22 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>{t('common.form.email')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('common.form.email')} {...field} />
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder={t('common.form.email')}
+                  onChange={(e) => {
+                    form.clearErrors()
+                    field.onChange(e.currentTarget.value)
+                  }}
+                  value={field.value}
+                />
               </FormControl>
               <FormDescription>
                 <small>
                   {t('login.form-description', { platform: 'SupportMe' })}
                 </small>
               </FormDescription>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -63,12 +86,23 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>{t('common.form.password')}</FormLabel>
               <FormControl>
-                <PasswordInput {...field} />
+                <PasswordInput
+                  {...field}
+                  onChange={(e) => {
+                    form.clearErrors()
+                    field.onChange(e.currentTarget.value)
+                  }}
+                  value={field.value}
+                />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
+        {form.formState.errors.root && (
+          <span className="text-red-500">
+            {form.formState.errors.root.message}
+          </span>
+        )}
         <Button type="submit" className="w-full self-center">
           {t('login.title')}
         </Button>
