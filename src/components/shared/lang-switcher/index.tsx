@@ -3,7 +3,7 @@ import { usePathname, useRouter } from '@/i18n/navigation'
 import { useLocale } from '@/helpers/hooks/useLocale'
 import { cn } from '@/lib/utils'
 
-const commonStyles = 'bg-transparent shadow-none'
+const commonStyles = 'bg-transparent shadow-none text-black dark:text-white'
 
 const LangSwitcher = () => {
   const router = useRouter()
@@ -18,7 +18,7 @@ const LangSwitcher = () => {
     <div className="flex items-center gap-2">
       <Button
         className={cn(commonStyles, {
-          'bg-green-500': locale === 'en',
+          'bg-green-500 text-white': locale === 'en',
         })}
         onClick={() => {
           if (locale === 'en') return
@@ -29,7 +29,7 @@ const LangSwitcher = () => {
       </Button>
       <Button
         className={cn(commonStyles, {
-          'bg-green-500': locale === 'ua',
+          'bg-green-500 text-white': locale === 'ua',
         })}
         onClick={() => {
           if (locale === 'ua') return

@@ -45,6 +45,7 @@
     }
   },
   "dashboard": {
+    "main-title": "Welcome back, {name}",
     "pages": {
       "dashboard": "My dashboard",
       "teams": "Teams",
@@ -53,27 +54,50 @@
       "settings": "Settings"
     },
     "cards": {
-      "1st": {
-        "title": "Total employees",
-        "button": "View all"
+      "employees": {
+        "1st": {
+          "title": "Total employees"
+        },
+        "2nd": {
+          "title": "Employees present",
+          "sub-title": "of employees are present",
+          "extra": "only"
+        },
+        "3rd": {
+          "title": "Employee of the month",
+          "sub-title": "Congratulation, {name}"
+        }
       },
-      "2nd": {
-        "title": "Employees present",
-        "sub-title": "of employees are present",
-        "extra": "only"
+      "teams": {
+        "1st": {
+          "title": "Total teams"
+        },
+        "2nd": {
+          "title": "Team leaders"
+        },
+        "3rd": {
+          "title": "Team distribution"
+        }
       },
-      "3rd": {
-        "title": "Employee of the month",
-        "sub-title": "Congratulation, {name}"
-      }
+      "button": "View all"
     },
     "charts": {
-      "main-title": "Employee work location trends",
+      "employees-title": "Employee work location trends",
+      "teams-title": "Support tickets resolved",
       "bar": {
         "labels": {
           "home": "Work from home",
           "office": "Work from office"
         }
+      }
+    },
+    "tables": {
+      "employee": {
+        "title": "Employees",
+        "name": "Name",
+        "last-name": "Last Name",
+        "team-name": "Team",
+        "team-leader": "Team leader"
       }
     }
   },

@@ -49,18 +49,20 @@ const DashboardLayout = ({ children }: Props) => {
   const t = useTranslations()
   const path = usePathname()
   return (
-    <div className="flex h-full w-full h-svh">
-      <aside className="dark:bg-muted hidden h-svh w-[22rem] flex-col gap-1 bg-[#6b7081] p-4 md:flex">
-        <h2 className="mb-4 text-2xl font-bold">SupportMe <LangSwitcher/> </h2>
+    <div className="flex h-svh w-full">
+      <aside className="bg-muted hidden h-svh min-w-[20rem] flex-col gap-1 p-4 md:flex">
+        <h2 className="mb-4 flex items-center justify-between text-2xl font-bold">
+          SupportMe <LangSwitcher />
+        </h2>
         <Separator className="mb-4" />
         {items.map((item) => (
           <Button
             key={item.title}
             asChild
             className={cn(
-              'justify-start bg-transparent text-base shadow-none',
+              'justify-start bg-transparent text-base text-black shadow-none dark:text-white',
               {
-                'bg-primary': path === item.url,
+                'bg-primary text-white': path === item.url,
               }
             )}
           >
@@ -79,7 +81,9 @@ const DashboardLayout = ({ children }: Props) => {
 
       <div className="bg-background dark:bg-background-dark flex h-full w-full flex-col gap-8 p-4">
         <header className="flex w-full items-center justify-between">
-          <h1 className="text-4xl font-bold">Welcome back, Name</h1>
+          <h2 className="text-2xl font-bold">
+            {t('dashboard.main-title', { name: 'Name' })}
+          </h2>
           <Sheet>
             <SheetTrigger className="block md:hidden">
               <MenuIcon />
@@ -103,7 +107,10 @@ const DashboardLayout = ({ children }: Props) => {
                   <Link href={item.url}>{t(item.title)}</Link>
                 </Button>
               ))}
-              <ToggleThemeButton triggerClassName="ml-auto mt-auto" />
+              <div className="mt-auto flex items-center justify-between">
+                <LangSwitcher />
+                <ToggleThemeButton />
+              </div>
             </SheetContent>
           </Sheet>
         </header>

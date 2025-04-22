@@ -10,76 +10,8 @@ import {
 } from 'recharts'
 import { useTranslations } from 'next-intl'
 import { useLocale } from '@/helpers/hooks/useLocale'
-import { format, Locale } from 'date-fns'
-
-const data = [
-  {
-    name: 'Jan',
-    office: 82,
-    wfh: 44,
-  },
-  {
-    name: 'Feb',
-    office: 80,
-    wfh: 40,
-  },
-  {
-    name: 'Mar',
-    office: 83,
-    wfh: 42,
-  },
-  {
-    name: 'Apr',
-    office: 50,
-    wfh: 50,
-  },
-  {
-    name: 'May',
-    office: 40,
-    wfh: 60,
-  },
-  {
-    name: 'Jun',
-    office: 60,
-    wfh: 40,
-  },
-  {
-    name: 'Jul',
-    office: 55,
-    wfh: 55,
-  },
-  {
-    name: 'Aug',
-    office: 49,
-    wfh: 61,
-  },
-  {
-    name: 'Sep',
-    office: 44,
-    wfh: 70,
-  },
-  {
-    name: 'Oct',
-    office: 40,
-    wfh: 40,
-  },
-  {
-    name: 'Nov',
-    office: 50,
-    wfh: 50,
-  },
-  {
-    name: 'Dec',
-    office: 50,
-    wfh: 50,
-  },
-]
-const getLocalizedMonthName = (monthAbbr: string, locale: Locale) => {
-  const date = new Date(`${monthAbbr} 1, 2024`)
-  const str = format(date, 'LLL', { locale })
-  const cleaned = str.replace(/\./g, '').trim()
-  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1)
-}
+import { data } from '@/components/shared/charts/bar-chart/mock'
+import { getLocalizedMonthName } from '@/components/shared/charts/helpers'
 
 const BarChartContainer = () => {
   const t = useTranslations()
@@ -101,6 +33,7 @@ const BarChartContainer = () => {
         <Tooltip
           separator=" - "
           labelClassName="font-bold"
+          wrapperClassName="dark:!bg-black rounded-md shadow-lg dark:!border-border"
           formatter={(value, name) => {
             if (name === 'wfh') {
               return [value, t('dashboard.charts.bar.labels.home')]
@@ -108,7 +41,6 @@ const BarChartContainer = () => {
               return [value, t('dashboard.charts.bar.labels.office')]
             }
           }}
-          wrapperClassName="dark:!bg-black rounded-md shadow-lg dark:!border-border"
         />
         <Legend
           iconType="circle"
